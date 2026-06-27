@@ -256,15 +256,18 @@ svg {
 
 .featured-app {
   position: relative;
+  display: block;
   padding: 2rem;
   border: 1px solid rgba(75, 85, 99, 0.5);
   border-radius: 1rem;
+  color: inherit;
   background: linear-gradient(180deg, rgba(17, 24, 39, 0.96), rgba(31, 41, 55, 0.88));
   box-shadow:
     0 0 24px rgba(99, 102, 241, 0.08),
     0 22px 68px rgba(0, 0, 0, 0.18);
   overflow: hidden;
   outline: none;
+  text-decoration: none;
   transition:
     background 280ms ease,
     border-color 280ms ease,
