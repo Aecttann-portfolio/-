@@ -1,0 +1,14 @@
+.agents/
+.codex-video-frames/
+.reference-example/
+design-qa.md
+
+.DS_Store
+Thumbs.db
+
+.idea/
+.vscode/
+
+*.log
+*.tmp
+*.temp

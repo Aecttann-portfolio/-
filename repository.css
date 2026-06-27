@@ -1,0 +1,932 @@
+:root {
+  --bg: #111827;
+  --panel: rgba(17, 24, 39, 0.64);
+  --panel-strong: rgba(17, 24, 39, 0.92);
+  --panel-soft: rgba(31, 41, 55, 0.42);
+  --border: rgba(75, 85, 99, 0.5);
+  --border-strong: rgba(96, 165, 250, 0.32);
+  --text: #f9fafb;
+  --muted: #9ca3af;
+  --subtle: #6b7280;
+  --blue: #60a5fa;
+  --blue-strong: #3b82f6;
+  --purple: #c084fc;
+  --purple-strong: #8b5cf6;
+  --teal: #2dd4bf;
+  --green: #4ade80;
+  --yellow: #facc15;
+  --pink: #f472b6;
+  --code-bg: #0b1120;
+  --shadow: 0 22px 68px rgba(0, 0, 0, 0.22);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: #000;
+}
+
+body {
+  position: relative;
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at center top, rgba(59, 130, 246, 0.18), transparent 56%),
+    radial-gradient(ellipse at right 38rem, rgba(168, 85, 247, 0.18), transparent 52%),
+    linear-gradient(180deg, #111827 0%, #1f2937 100%);
+  font-family: "Geist", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 400;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.12) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, #000, transparent 78%);
+  content: "";
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+}
+
+svg {
+  display: block;
+}
+
+.repo-page {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, 80rem);
+  margin: 0 auto;
+  padding: 1rem 0 4rem;
+}
+
+.repo-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  min-height: 4rem;
+  padding: 0.55rem 0;
+  background: linear-gradient(180deg, rgba(17, 24, 39, 0.96), rgba(17, 24, 39, 0.72));
+  backdrop-filter: blur(14px);
+}
+
+.repo-back,
+.repo-github-link,
+.repo-portfolio-link {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.repo-back,
+.repo-github-link,
+.repo-portfolio-link,
+.raw-link,
+.branch-pill,
+.icon-button {
+  border: 1px solid rgba(75, 85, 99, 0.5);
+  color: #dbeafe;
+  background: rgba(31, 41, 55, 0.72);
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.repo-back,
+.repo-github-link,
+.repo-portfolio-link {
+  gap: 0.45rem;
+  height: 2.45rem;
+  padding: 0 0.85rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.repo-back {
+  cursor: pointer;
+}
+
+.repo-back:disabled {
+  cursor: default;
+  opacity: 0.46;
+  pointer-events: none;
+}
+
+.repo-header {
+  gap: 0.65rem;
+}
+
+.repo-back:hover,
+.repo-github-link:hover,
+.repo-portfolio-link:hover,
+.icon-button:hover,
+.raw-link:hover {
+  border-color: rgba(96, 165, 250, 0.44);
+  color: #f8fafc;
+  background: rgba(59, 130, 246, 0.16);
+  box-shadow: 0 0 24px rgba(96, 165, 250, 0.12);
+}
+
+.repo-back:focus-visible,
+.repo-github-link:focus-visible,
+.repo-portfolio-link:focus-visible,
+.icon-button:focus-visible,
+.raw-link:focus-visible,
+.breadcrumbs button:focus-visible,
+.file-row:focus-visible {
+  outline: 2px solid rgba(96, 165, 250, 0.9);
+  outline-offset: 3px;
+}
+
+.repo-back svg,
+.repo-github-link svg,
+.repo-portfolio-link svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.repo-back svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.4;
+}
+
+.repo-hero {
+  padding: 2.25rem 0 1.35rem;
+}
+
+.repo-hero h1 {
+  margin: 0;
+  color: transparent;
+  background: linear-gradient(90deg, var(--blue), var(--purple), var(--blue));
+  background-size: 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.repo-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(14rem, 17rem);
+  gap: 1rem;
+  align-items: start;
+}
+
+.repo-panel,
+.repo-sidebar {
+  position: relative;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: linear-gradient(180deg, rgba(17, 24, 39, 0.96), rgba(31, 41, 55, 0.86));
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.repo-panel::before,
+.repo-sidebar::before {
+  position: absolute;
+  inset: 0;
+  border: 1px solid transparent;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.42), rgba(168, 85, 247, 0.34)) border-box;
+  opacity: 0.22;
+  pointer-events: none;
+  -webkit-mask:
+    linear-gradient(#000 0 0) padding-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) padding-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  content: "";
+}
+
+.repo-sidebar {
+  position: sticky;
+  top: 5rem;
+  max-height: calc(100vh - 6rem);
+  overflow: auto;
+}
+
+.repo-main-column {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.panel-heading,
+.repo-panel-header,
+.readme-heading,
+.code-toolbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(75, 85, 99, 0.5);
+  background: rgba(31, 41, 55, 0.52);
+}
+
+.panel-heading {
+  justify-content: space-between;
+}
+
+.panel-heading h2,
+.side-section h2,
+.code-toolbar h2 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.icon-button {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.55rem;
+  cursor: pointer;
+}
+
+.icon-button svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.branch-pill,
+.breadcrumbs,
+.latest-commit,
+.file-row,
+.readme-heading > div,
+.release-card {
+  display: flex;
+  align-items: center;
+}
+
+.branch-pill {
+  gap: 0.45rem;
+  flex: 0 0 auto;
+  height: 2rem;
+  padding: 0 0.65rem;
+  border-radius: 999px;
+  color: var(--blue);
+  background: rgba(59, 130, 246, 0.12);
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.branch-pill svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.breadcrumbs {
+  flex-wrap: wrap;
+  min-width: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.breadcrumbs button {
+  border: 0;
+  color: #93c5fd;
+  background: transparent;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.breadcrumbs button:hover {
+  color: #dbeafe;
+}
+
+.breadcrumbs span {
+  color: var(--subtle);
+}
+
+.latest-commit {
+  position: relative;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 3.2rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(75, 85, 99, 0.5);
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.latest-commit strong {
+  color: #f3f4f6;
+}
+
+.latest-commit code {
+  color: var(--blue);
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.file-list {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0 0 1rem 1rem;
+}
+
+.file-row {
+  width: 100%;
+  min-height: 2.65rem;
+  padding: 0 1rem;
+  border: 0;
+  border-bottom: 1px solid rgba(75, 85, 99, 0.42);
+  color: var(--text);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.file-row:last-child {
+  border-bottom: 0;
+}
+
+.file-row:hover {
+  background:
+    linear-gradient(90deg, rgba(59, 130, 246, 0.12), rgba(168, 85, 247, 0.08)),
+    rgba(31, 41, 55, 0.48);
+  box-shadow: inset 3px 0 0 rgba(96, 165, 250, 0.72);
+}
+
+.file-icon {
+  flex: 0 0 auto;
+  width: 1.05rem;
+  height: 1.05rem;
+  margin-right: 0.65rem;
+  color: #cbd5e1;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+.file-row.is-directory .file-icon {
+  color: var(--blue);
+  fill: currentColor;
+  stroke: none;
+}
+
+.file-name {
+  flex: 0 1 15rem;
+  min-width: 9rem;
+  color: #dbeafe;
+  font-size: 0.93rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.file-row:hover .file-name {
+  color: var(--blue);
+}
+
+.file-message {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-time {
+  flex: 0 0 5.8rem;
+  color: var(--muted);
+  font-size: 0.86rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.code-toolbar {
+  align-items: flex-start;
+}
+
+.code-toolbar > div {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.code-toolbar h2 {
+  overflow-wrap: anywhere;
+}
+
+.code-toolbar p {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.raw-link {
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding: 0.45rem 0.7rem;
+  border-radius: 0.55rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.code-body {
+  position: relative;
+  max-width: 100%;
+  min-width: 0;
+  overflow: auto;
+  background:
+    radial-gradient(circle at 16% 0, rgba(96, 165, 250, 0.08), transparent 26%),
+    var(--code-bg);
+}
+
+.code-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.code-table td {
+  vertical-align: top;
+}
+
+.line-number {
+  width: 1%;
+  min-width: 3rem;
+  padding: 0 0.8rem;
+  color: #64748b;
+  text-align: right;
+  user-select: none;
+}
+
+.code-line {
+  min-width: 42rem;
+  padding: 0 1rem 0 0.3rem;
+  color: #e5e7eb;
+  white-space: pre;
+}
+
+.syntax-keyword {
+  color: #c084fc;
+  font-weight: 600;
+}
+
+.syntax-string {
+  color: #86efac;
+}
+
+.syntax-comment {
+  color: #64748b;
+  font-style: italic;
+}
+
+.syntax-number,
+.syntax-boolean,
+.syntax-null {
+  color: #facc15;
+}
+
+.syntax-type,
+.syntax-tag {
+  color: #60a5fa;
+}
+
+.syntax-annotation,
+.syntax-attribute {
+  color: #2dd4bf;
+}
+
+.binary-preview {
+  display: grid;
+  place-items: center;
+  min-height: 18rem;
+  padding: 2rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.binary-preview img {
+  max-width: min(100%, 28rem);
+  max-height: 36rem;
+  border: 1px solid rgba(75, 85, 99, 0.62);
+  border-radius: 0.75rem;
+  object-fit: contain;
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.readme-heading {
+  justify-content: space-between;
+}
+
+.readme-heading > div {
+  gap: 0.5rem;
+}
+
+.readme-heading svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  color: var(--blue);
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.readme-content {
+  position: relative;
+  padding: 2rem;
+  color: #e5e7eb;
+  line-height: 1.6;
+}
+
+.readme-content > :first-child {
+  margin-top: 0;
+}
+
+.readme-content h1,
+.readme-content h2,
+.readme-content h3 {
+  margin: 1.45rem 0 0.75rem;
+  padding-bottom: 0.42rem;
+  border-bottom: 1px solid rgba(75, 85, 99, 0.5);
+  color: #f8fafc;
+  line-height: 1.25;
+}
+
+.readme-content h2 {
+  font-size: 1.55rem;
+}
+
+.readme-content h3 {
+  border-bottom: 0;
+  font-size: 1.18rem;
+}
+
+.readme-content p {
+  margin: 0.85rem 0;
+  color: #d1d5db;
+}
+
+.readme-content ul {
+  margin: 0.8rem 0;
+  padding-left: 1.4rem;
+}
+
+.readme-content li {
+  margin: 0.45rem 0;
+}
+
+.readme-content code {
+  padding: 0.1rem 0.3rem;
+  border: 1px solid rgba(75, 85, 99, 0.4);
+  border-radius: 0.35rem;
+  color: #dbeafe;
+  background: rgba(15, 23, 42, 0.72);
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.88em;
+}
+
+.readme-content a {
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 0.18rem;
+}
+
+.readme-content img {
+  display: block;
+  width: min(100%, 20rem);
+  height: auto;
+  margin: 1rem 0;
+  border: 1px solid rgba(75, 85, 99, 0.45);
+  border-radius: 0.75rem;
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.readme-content hr {
+  height: 0.15rem;
+  margin: 1.6rem 0;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--blue), var(--purple));
+}
+
+.side-section {
+  position: relative;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(75, 85, 99, 0.42);
+}
+
+.side-section:last-child {
+  border-bottom: 0;
+}
+
+.side-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.8rem;
+}
+
+.side-section h2 span {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  border: 1px solid rgba(59, 130, 246, 0.28);
+  border-radius: 999px;
+  color: var(--blue);
+  background: rgba(59, 130, 246, 0.12);
+  font-size: 0.72rem;
+}
+
+.side-section p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.about-list {
+  display: grid;
+  gap: 0.7rem;
+  margin: 1rem 0 0;
+}
+
+.about-list div {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.about-list dt {
+  color: var(--subtle);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.about-list dd {
+  margin: 0;
+  color: #f3f4f6;
+  font-size: 0.88rem;
+}
+
+.release-card {
+  gap: 0.65rem;
+}
+
+.release-card svg {
+  flex: 0 0 auto;
+  width: 1.2rem;
+  height: 1.2rem;
+  color: var(--green);
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.release-link {
+  color: var(--blue);
+  font-size: 0.94rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-underline-offset: 0.2rem;
+}
+
+.release-link:hover,
+.release-link:focus-visible {
+  color: #dbeafe;
+  text-decoration: underline;
+}
+
+.release-link:focus-visible {
+  outline: 2px solid rgba(96, 165, 250, 0.9);
+  outline-offset: 3px;
+}
+
+.latest-label {
+  display: inline-flex;
+  align-items: center;
+  height: 1.35rem;
+  margin-left: 0.35rem;
+  padding: 0 0.4rem;
+  border: 1px solid rgba(74, 222, 128, 0.72);
+  border-radius: 999px;
+  color: #86efac;
+  background: rgba(34, 197, 94, 0.12);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.release-card p {
+  margin-top: 0.2rem;
+  font-size: 0.82rem;
+}
+
+.language-meter {
+  display: flex;
+  height: 0.55rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(75, 85, 99, 0.58);
+}
+
+.language-segment {
+  min-width: 0.22rem;
+  background: var(--language-color);
+}
+
+.language-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1rem;
+  margin-top: 0.9rem;
+}
+
+.language-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #e5e7eb;
+  font-size: 0.83rem;
+}
+
+.language-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: var(--language-color);
+}
+
+.language-percent {
+  color: var(--muted);
+}
+
+@media (max-width: 1100px) {
+  .repo-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .repo-sidebar {
+    position: static;
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-height: none;
+  }
+
+  .side-section {
+    border-right: 1px solid rgba(75, 85, 99, 0.42);
+    border-bottom: 0;
+  }
+
+  .side-section:last-child {
+    border-right: 0;
+  }
+}
+
+@media (max-width: 820px) {
+  .repo-header,
+  .repo-hero,
+  .repo-workspace,
+  .repo-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .repo-header {
+    position: static;
+  }
+
+  .repo-github-link,
+  .repo-back,
+  .repo-portfolio-link {
+    justify-content: center;
+  }
+
+  .repo-sidebar {
+    max-height: none;
+  }
+
+  .side-section,
+  .side-section:last-child {
+    border-right: 0;
+    border-bottom: 1px solid rgba(75, 85, 99, 0.42);
+  }
+
+  .file-row {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.72rem 1rem;
+  }
+
+  .file-name {
+    flex: 1 1 calc(100% - 2rem);
+    min-width: 0;
+  }
+
+  .file-message {
+    flex: 1 1 100%;
+    padding: 0 0 0 1.7rem;
+    white-space: normal;
+  }
+
+  .file-time {
+    flex: 1 1 100%;
+    padding-left: 1.7rem;
+    text-align: left;
+  }
+
+  .latest-commit,
+  .code-toolbar,
+  .repo-panel-header {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .raw-link {
+    margin-left: 0;
+  }
+
+  .readme-content {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .repo-page {
+    width: min(100% - 1rem, 80rem);
+  }
+
+  .repo-hero {
+    padding-top: 1.5rem;
+  }
+
+  .repo-hero h1 {
+    font-size: clamp(2rem, 11vw, 2.7rem);
+  }
+
+  .code-table {
+    font-size: 0.76rem;
+  }
+}

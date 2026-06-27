@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GitHub-style source browser for Pizza Mobile App, a Kotlin Multiplatform project.">
+  <title>Pizza Mobile App | Repository Browser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="repository.css">
+</head>
+<body>
+  <main class="repo-page">
+    <header class="repo-header">
+      <button class="repo-back" type="button" data-up-directory aria-label="Back one repository level">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        Back
+      </button>
+      <a class="repo-portfolio-link" href="index.html#projects" aria-label="Back to portfolio projects">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M4 12l5-5M4 12l5 5"/></svg>
+        Portfolio
+      </a>
+    </header>
+
+    <section class="repo-hero" aria-labelledby="repo-title">
+      <h1 id="repo-title">Pizza Mobile App</h1>
+    </section>
+
+    <section class="repo-workspace" aria-label="Repository browser">
+      <div class="repo-main-column">
+        <section class="repo-panel file-browser" data-browser-panel aria-label="Repository files">
+          <div class="repo-panel-header">
+            <div class="branch-pill">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm0 10a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm10-7a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-7 0h4M7 10v4"/></svg>
+              <span data-branch>main</span>
+            </div>
+            <nav class="breadcrumbs" data-breadcrumbs aria-label="Current path"></nav>
+          </div>
+          <div class="latest-commit" data-latest-commit></div>
+          <div class="file-list" data-file-list></div>
+        </section>
+
+        <section class="repo-panel code-viewer" data-code-panel hidden aria-label="Code viewer">
+          <div class="code-toolbar">
+            <button class="icon-button" type="button" data-close-file aria-label="Back to file list">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <div>
+              <h2 data-file-title></h2>
+              <p data-file-subtitle></p>
+            </div>
+            <a class="raw-link" data-file-github target="_blank" rel="noreferrer">View on GitHub</a>
+          </div>
+          <div class="code-body" data-code-body></div>
+        </section>
+
+        <section class="repo-panel readme-panel" data-readme-panel aria-label="README">
+          <div class="readme-heading">
+            <div>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H21v17H6.5A2.5 2.5 0 0 0 4 22V5.5Zm0 0A2.5 2.5 0 0 1 6.5 8H21"/></svg>
+              <strong>README</strong>
+            </div>
+            <button class="icon-button" type="button" data-open-readme aria-label="Open README file">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+            </button>
+          </div>
+          <article class="readme-content" data-readme></article>
+        </section>
+      </div>
+
+      <aside class="repo-sidebar" aria-label="Repository details">
+        <section class="side-section" data-release-section>
+          <h2>Releases <span>1</span></h2>
+          <div class="release-card">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m20.6 13.2-7.4 7.4a2 2 0 0 1-2.8 0L3 13.2V3h10.2l7.4 7.4a2 2 0 0 1 0 2.8ZM7.5 7.5h.01"/></svg>
+            <div>
+              <a class="release-link" href="assets/repository-pizza/androidApp-release.apk" download="androidApp-release.apk" data-release-tag>v1.0.0</a>
+              <span class="latest-label">Latest</span>
+              <p data-release-time>2 weeks ago</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="side-section">
+          <h2>Languages</h2>
+          <div class="language-meter" data-language-meter></div>
+          <div class="language-list" data-language-list></div>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <script src="repository-data.js"></script>
+  <script src="repository.js"></script>
+</body>
+</html>
