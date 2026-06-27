@@ -1840,34 +1840,6 @@ svg {
   fill: currentColor;
 }
 
-.socials {
-  display: flex;
-  justify-content: center;
-  gap: 1.1rem;
-  margin-top: 2rem;
-}
-
-.socials a {
-  display: grid;
-  place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 999px;
-  color: var(--muted);
-  transition: color 180ms ease, background-color 180ms ease;
-}
-
-.socials a:hover {
-  color: #fff;
-  background: #1f2937;
-}
-
-.socials svg {
-  width: 1.45rem;
-  height: 1.45rem;
-  fill: currentColor;
-}
-
 .top-button {
   position: fixed;
   right: 1.4rem;
