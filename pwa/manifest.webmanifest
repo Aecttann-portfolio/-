@@ -1,0 +1,19 @@
+{
+  "name": "Pizza Mobile App",
+  "short_name": "Pizza",
+  "description": "Installable pizza catalog PWA matching the native mobile experience.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#f3e3da",
+  "icons": [
+    {
+      "src": "./assets/images/splash_pizza.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
