@@ -336,7 +336,7 @@
           </div>
         </article>
 
-        <a class="project-card project-card-link reveal" href="repository-pizza.html" style="--delay: 360ms" aria-label="Open Pizza MA repository browser">
+        <article class="project-card project-card--pizza reveal" tabindex="0" style="--delay: 360ms">
           <div class="app-icon has-image">
             <img src="assets/project-icons/pizza-mobile.png" alt="Pizza MA app icon">
           </div>
@@ -344,7 +344,11 @@
             <div class="project-title">
               <h3>Pizza MA</h3>
               <span>Food</span>
-              <span class="project-title__action-chip">Open GIT</span>
+              <a class="project-title__action-chip" href="repository-pizza.html" aria-label="Open Pizza MA repository browser">Open GIT</a>
+              <a class="project-title__action-chip project-title__action-chip--pwa" href="https://aectann.github.io/pizza-mobile-app/pwa/?install=1" aria-label="Open Pizza MA PWA install flow">
+                PWA
+                <span class="project-title__tooltip" role="tooltip">Встановити додаток на робочий стіл</span>
+              </a>
             </div>
             <p>Mobile ordering experience for pizza browsing, product details, and a focused checkout path.</p>
             <div class="tag-row">
@@ -354,7 +358,7 @@
               <span>Pizza</span><span>Shop</span><span>View code</span>
             </div>
           </div>
-        </a>
+        </article>
 
         <article class="project-card project-card--centered reveal" tabindex="0" style="--delay: 480ms">
           <div class="app-icon has-image">

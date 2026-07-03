@@ -1051,7 +1051,8 @@ svg {
   color: var(--blue);
 }
 
-.project-title span {
+.project-title span,
+.project-title__action-chip {
   padding: 0.18rem 0.65rem;
   border: 1px solid rgba(59, 130, 246, 0.3);
   border-radius: 999px;
@@ -1062,10 +1063,64 @@ svg {
 }
 
 .project-title__action-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
   margin-left: auto;
   border-color: rgba(168, 85, 247, 0.42) !important;
   color: var(--purple) !important;
   background: rgba(168, 85, 247, 0.12) !important;
+}
+
+.project-title__action-chip + .project-title__action-chip {
+  margin-left: 0;
+}
+
+.project-title__action-chip:hover,
+.project-title__action-chip:focus-visible {
+  border-color: rgba(96, 165, 250, 0.65) !important;
+  color: #bfdbfe !important;
+  background: rgba(59, 130, 246, 0.18) !important;
+}
+
+.project-title__action-chip:focus-visible {
+  outline: 2px solid rgba(96, 165, 250, 0.9);
+  outline-offset: 3px;
+}
+
+.project-title__action-chip--pwa {
+  border-color: rgba(34, 197, 94, 0.45) !important;
+  color: #86efac !important;
+  background: rgba(34, 197, 94, 0.12) !important;
+}
+
+.project-title__tooltip {
+  position: absolute;
+  z-index: 8;
+  right: 0;
+  bottom: calc(100% + 0.6rem);
+  width: max-content;
+  max-width: min(17rem, calc(100vw - 2rem));
+  padding: 0.5rem 0.7rem;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 0.75rem;
+  color: #f9fafb;
+  background: rgba(15, 23, 42, 0.94);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.28);
+  font-size: 0.78rem;
+  line-height: 1.35;
+  white-space: normal;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(0.35rem);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.project-title__action-chip--pwa:hover .project-title__tooltip,
+.project-title__action-chip--pwa:focus-visible .project-title__tooltip {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .project-card p {
