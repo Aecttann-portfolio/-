@@ -1092,54 +1092,64 @@ svg {
 }
 
 .project-title__action-chip--pwa {
+  isolation: isolate;
   cursor: default;
   border-color: rgba(34, 197, 94, 0.45) !important;
   color: #86efac !important;
   background: rgba(34, 197, 94, 0.12) !important;
 }
 
-.project-title__pwa-popover {
+.project-title__action-chip--pwa::after {
+  content: "";
+  position: absolute;
+  right: -0.35rem;
+  top: 100%;
+  width: 14.1rem;
+  height: 0.85rem;
+}
+
+.project-title .project-title__pwa-popover {
   position: absolute;
   z-index: 50;
   right: 0;
-  top: calc(100% + 0.65rem);
+  top: calc(100% + 0.55rem);
   display: grid;
-  gap: 0.42rem;
-  width: 12.5rem;
-  padding: 0.8rem;
-  border: 1px solid rgba(75, 85, 99, 0.68);
-  border-radius: 0.55rem;
+  gap: 0.46rem;
+  width: 13.25rem;
+  padding: 0.78rem;
+  border: 1px solid rgba(96, 165, 250, 0.22);
+  border-radius: 0.8rem;
   color: #d1d5db;
-  background: rgba(31, 41, 55, 0.9);
+  background: rgba(24, 37, 61, 0.96);
   box-shadow: 0 20px 52px rgba(0, 0, 0, 0.38);
   backdrop-filter: blur(10px);
   font-size: 0.78rem;
   line-height: 1.4;
   opacity: 0;
   pointer-events: none;
-  transform: translate(0.45rem, 0.32rem);
+  transform: translate(0.2rem, 0.28rem);
   transition: opacity 180ms ease, transform 180ms ease, border-color 180ms ease;
 }
 
-.project-title__pwa-popover strong {
+.project-title .project-title__pwa-popover strong {
   color: #f3f4f6;
   font-size: 0.84rem;
   font-style: normal;
   font-weight: 600;
 }
 
-.project-title__pwa-popover em {
+.project-title .project-title__pwa-popover em {
   color: var(--muted);
   font-style: normal;
 }
 
-.project-title__pwa-popover a {
+.project-title .project-title__pwa-popover a {
   display: inline-grid;
   justify-self: start;
   place-items: center;
-  min-height: 2rem;
-  margin-top: 0.1rem;
-  padding: 0.35rem 0.72rem;
+  min-height: 1.95rem;
+  margin-top: 0.14rem;
+  padding: 0.34rem 0.78rem;
   border: 1px solid rgba(34, 197, 94, 0.42);
   border-radius: 999px;
   color: #bbf7d0;
@@ -1149,8 +1159,8 @@ svg {
   text-decoration: none;
 }
 
-.project-title__pwa-popover a:hover,
-.project-title__pwa-popover a:focus-visible {
+.project-title .project-title__pwa-popover a:hover,
+.project-title .project-title__pwa-popover a:focus-visible {
   border-color: rgba(96, 165, 250, 0.48);
   color: #bfdbfe;
   background: rgba(59, 130, 246, 0.18);
@@ -1158,7 +1168,8 @@ svg {
 
 .project-title__action-chip--pwa:hover .project-title__pwa-popover,
 .project-title__action-chip--pwa:focus-visible .project-title__pwa-popover,
-.project-title__action-chip--pwa:focus-within .project-title__pwa-popover {
+.project-title__action-chip--pwa:focus-within .project-title__pwa-popover,
+.project-title__action-chip--pwa.is-open .project-title__pwa-popover {
   opacity: 1;
   pointer-events: auto;
   transform: translate(0, 0);
@@ -1170,6 +1181,22 @@ svg {
   color: var(--muted);
   font-size: 0.95rem;
   line-height: 1.5;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .project-title__action-chip--pwa:hover .project-title__pwa-popover,
+  .project-title__action-chip--pwa:focus-visible .project-title__pwa-popover,
+  .project-title__action-chip--pwa:focus-within .project-title__pwa-popover {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(0.2rem, 0.28rem);
+  }
+
+  .project-title__action-chip--pwa.is-open .project-title__pwa-popover {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(0, 0);
+  }
 }
 
 .tag-row {
@@ -2120,7 +2147,7 @@ svg {
   .project-title__pwa-popover {
     right: auto;
     left: 50%;
-    width: min(12.5rem, calc(100vw - 2.5rem));
+    width: min(13.25rem, calc(100vw - 2.5rem));
     transform: translate(-50%, 0.32rem);
   }
 
@@ -2128,6 +2155,13 @@ svg {
   .project-title__action-chip--pwa:focus-visible .project-title__pwa-popover,
   .project-title__action-chip--pwa:focus-within .project-title__pwa-popover {
     transform: translate(-50%, 0);
+  }
+
+  .project-title__action-chip--pwa::after {
+    right: auto;
+    left: 50%;
+    width: min(13.9rem, calc(100vw - 2rem));
+    transform: translateX(-50%);
   }
 
   .project-showcases {

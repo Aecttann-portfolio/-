@@ -331,6 +331,31 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
   });
 });
 
+const pwaActionChip = document.querySelector(".project-title__action-chip--pwa");
+const pwaPopover = pwaActionChip?.querySelector(".project-title__pwa-popover");
+
+if (pwaActionChip && pwaPopover) {
+  pwaActionChip.addEventListener("click", (event) => {
+    if (event.target instanceof Element && event.target.closest("a")) return;
+
+    event.preventDefault();
+    pwaActionChip.classList.toggle("is-open");
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!(event.target instanceof Element)) return;
+    if (pwaActionChip.contains(event.target)) return;
+
+    pwaActionChip.classList.remove("is-open");
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+
+    pwaActionChip.classList.remove("is-open");
+  });
+}
+
 const topButton = document.querySelector(".top-button");
 const expertiseSection = document.querySelector("#expertise");
 let topButtonTicking = false;
