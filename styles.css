@@ -2140,6 +2140,15 @@ svg {
     text-align: center;
   }
 
+  .project-title {
+    justify-content: center;
+  }
+
+  .project-title h3 {
+    flex: 0 0 100%;
+    text-align: center;
+  }
+
   .project-title__action-chip {
     margin-left: 0;
   }
