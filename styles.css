@@ -1583,6 +1583,15 @@ svg {
   stroke-linejoin: round;
 }
 
+.process-icon--asset {
+  background: transparent;
+}
+
+.process-icon--asset img {
+  width: 100%;
+  height: 100%;
+}
+
 .process-icon.blue {
   color: var(--blue);
   background: rgba(59, 130, 246, 0.12);
