@@ -446,7 +446,7 @@ svg {
   color: var(--muted);
 }
 
-.app-metrics span {
+.app-metrics > span {
   display: grid;
   gap: 0.45rem;
   color: #6b7280;
@@ -472,16 +472,16 @@ svg {
   fill: currentColor;
 }
 
-.app-metrics span:first-child b {
+.app-metrics > span:first-child b {
   color: var(--yellow);
 }
 
-.app-metrics span:last-child b {
+.app-metrics > span:last-child b {
   color: var(--green);
 }
 
-.featured-app:hover .app-metrics span,
-.featured-app:focus-visible .app-metrics span {
+.featured-app:hover .app-metrics > span,
+.featured-app:focus-visible .app-metrics > span {
   color: #9ca3af;
 }
 
@@ -1636,7 +1636,7 @@ svg {
   transition: color 220ms ease;
 }
 
-.process-card li span {
+.process-card li > span:first-child {
   display: grid;
   flex: 0 0 auto;
   place-items: center;
@@ -1650,12 +1650,12 @@ svg {
   transition: background-color 220ms ease, color 220ms ease;
 }
 
-.process-card:nth-child(2) li span {
+.process-card:nth-child(2) li > span:first-child {
   color: var(--purple);
   background: rgba(168, 85, 247, 0.12);
 }
 
-.process-card:nth-child(3) li span {
+.process-card:nth-child(3) li > span:first-child {
   color: var(--green);
   background: rgba(34, 197, 94, 0.12);
 }
@@ -1664,17 +1664,17 @@ svg {
   color: #e5e7eb;
 }
 
-.process-card:hover li span {
+.process-card:hover li > span:first-child {
   color: #dbeafe;
   background: rgba(96, 165, 250, 0.2);
 }
 
-.process-card:nth-child(2):hover li span {
+.process-card:nth-child(2):hover li > span:first-child {
   color: #e9d5ff;
   background: rgba(168, 85, 247, 0.24);
 }
 
-.process-card:nth-child(3):hover li span {
+.process-card:nth-child(3):hover li > span:first-child {
   color: #dcfce7;
   background: rgba(34, 197, 94, 0.22);
 }

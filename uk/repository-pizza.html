@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
   <meta charset="UTF-8">
-  <base href="./">
+  <base href="../">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="GitHub-style source browser for Pizza Mobile App, a Kotlin Multiplatform project." data-i18n-content="repo.description">
-  <title data-i18n="repo.title">Pizza Mobile App | Repository Browser</title>
+  <meta name="description" content="Перегляд коду Pizza Mobile App — проєкту на Kotlin Multiplatform — в інтерфейсі у стилі GitHub." data-i18n-content="repo.description">
+  <title data-i18n="repo.title">Pizza Mobile App | Перегляд репозиторію</title>
   <script src="locales/site.js"></script>
   <script src="locales/repository.js"></script>
   <script src="i18n.js"></script>
@@ -14,24 +14,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="repository.css">
   <link rel="stylesheet" href="i18n.css">
-  <link rel="canonical" href="https://aecttann-portfolio.github.io/-/en/repository-pizza.html">
+  <link rel="canonical" href="https://aecttann-portfolio.github.io/-/uk/repository-pizza.html">
   <link rel="alternate" hreflang="en" href="https://aecttann-portfolio.github.io/-/en/repository-pizza.html">
   <link rel="alternate" hreflang="uk" href="https://aecttann-portfolio.github.io/-/uk/repository-pizza.html">
 </head>
 <body>
   <main class="repo-page">
     <header class="repo-header">
-      <button class="repo-back" type="button" data-up-directory aria-label="Back one repository level" data-i18n-aria-label="repo.backLevel">
+      <button class="repo-back" type="button" data-up-directory aria-label="На рівень вище в репозиторії" data-i18n-aria-label="repo.backLevel">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
-        <span data-i18n="repo.back">Back</span>
+        <span data-i18n="repo.back">Назад</span>
       </button>
-      <a class="repo-portfolio-link" href="en/#projects" data-i18n-link="index.html#projects" aria-label="Back to portfolio projects" data-i18n-aria-label="repo.backPortfolio">
+      <a class="repo-portfolio-link" href="uk/#projects" data-i18n-link="index.html#projects" aria-label="Повернутися до проєктів портфоліо" data-i18n-aria-label="repo.backPortfolio">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M4 12l5-5M4 12l5 5"/></svg>
-        <span data-i18n="repo.portfolio">Portfolio</span>
+        <span data-i18n="repo.portfolio">Портфоліо</span>
       </a>
-      <div class="language-switch" role="group" aria-label="Language" data-i18n-aria-label="language.label">
-        <a class="language-switch__option" href="en/repository-pizza.html" data-language="en" lang="en" title="English" aria-label="English" aria-current="true">EN</a>
-        <a class="language-switch__option" href="uk/repository-pizza.html" data-language="uk" lang="uk" title="Українська" aria-label="Українська">УК</a>
+      <div class="language-switch" role="group" aria-label="Мова" data-i18n-aria-label="language.label">
+        <a class="language-switch__option" href="en/repository-pizza.html" data-language="en" lang="en" title="English" aria-label="English">EN</a>
+        <a class="language-switch__option" href="uk/repository-pizza.html" data-language="uk" lang="uk" title="Українська" aria-label="Українська" aria-current="true">УК</a>
       </div>
     </header>
 
@@ -39,30 +39,30 @@
       <h1 id="repo-title">Pizza Mobile App</h1>
     </section>
 
-    <section class="repo-workspace" aria-label="Repository browser" data-i18n-aria-label="repo.browser">
+    <section class="repo-workspace" aria-label="Перегляд репозиторію" data-i18n-aria-label="repo.browser">
       <div class="repo-main-column">
-        <section class="repo-panel file-browser" data-browser-panel aria-label="Repository files" data-i18n-aria-label="repo.files">
+        <section class="repo-panel file-browser" data-browser-panel aria-label="Файли репозиторію" data-i18n-aria-label="repo.files">
           <div class="repo-panel-header">
             <div class="branch-pill">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm0 10a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm10-7a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-7 0h4M7 10v4"/></svg>
               <span data-branch>main</span>
             </div>
-            <nav class="breadcrumbs" data-breadcrumbs aria-label="Current path" data-i18n-aria-label="repo.currentPath"></nav>
+            <nav class="breadcrumbs" data-breadcrumbs aria-label="Поточний шлях" data-i18n-aria-label="repo.currentPath"></nav>
           </div>
           <div class="latest-commit" data-latest-commit></div>
           <div class="file-list" data-file-list></div>
         </section>
 
-        <section class="repo-panel code-viewer" data-code-panel hidden aria-label="Code viewer" data-i18n-aria-label="repo.codeViewer">
+        <section class="repo-panel code-viewer" data-code-panel hidden aria-label="Перегляд коду" data-i18n-aria-label="repo.codeViewer">
           <div class="code-toolbar">
-            <button class="icon-button" type="button" data-close-file aria-label="Back to file list" data-i18n-aria-label="repo.backFiles">
+            <button class="icon-button" type="button" data-close-file aria-label="Повернутися до списку файлів" data-i18n-aria-label="repo.backFiles">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
             </button>
             <div>
               <h2 data-file-title></h2>
               <p data-file-subtitle></p>
             </div>
-            <a class="raw-link" data-file-github target="_blank" rel="noreferrer" data-i18n="repo.viewGithub">View on GitHub</a>
+            <a class="raw-link" data-file-github target="_blank" rel="noreferrer" data-i18n="repo.viewGithub">Переглянути на GitHub</a>
           </div>
           <div class="code-body" data-code-body></div>
         </section>
@@ -73,7 +73,7 @@
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H21v17H6.5A2.5 2.5 0 0 0 4 22V5.5Zm0 0A2.5 2.5 0 0 1 6.5 8H21"/></svg>
               <strong>README</strong>
             </div>
-            <button class="icon-button" type="button" data-open-readme aria-label="Open README file" data-i18n-aria-label="repo.openReadme">
+            <button class="icon-button" type="button" data-open-readme aria-label="Відкрити файл README" data-i18n-aria-label="repo.openReadme">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
             </button>
           </div>
@@ -81,21 +81,21 @@
         </section>
       </div>
 
-      <aside class="repo-sidebar" aria-label="Repository details" data-i18n-aria-label="repo.details">
+      <aside class="repo-sidebar" aria-label="Відомості про репозиторій" data-i18n-aria-label="repo.details">
         <section class="side-section" data-release-section>
-          <h2><span class="side-section-title" data-i18n="repo.releases">Releases</span> <span>1</span></h2>
+          <h2><span class="side-section-title" data-i18n="repo.releases">Релізи</span> <span>1</span></h2>
           <div class="release-card">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m20.6 13.2-7.4 7.4a2 2 0 0 1-2.8 0L3 13.2V3h10.2l7.4 7.4a2 2 0 0 1 0 2.8ZM7.5 7.5h.01"/></svg>
             <div>
               <a class="release-link" href="assets/repository-pizza/androidApp-release.apk" download="androidApp-release.apk" data-release-tag>v1.0.0</a>
-              <span class="latest-label" data-i18n="repo.latest">Latest</span>
-              <p data-i18n="repo.downloadApk">Download APK</p>
+              <span class="latest-label" data-i18n="repo.latest">Останній</span>
+              <p data-i18n="repo.downloadApk">Завантажити APK</p>
             </div>
           </div>
         </section>
 
         <section class="side-section">
-          <h2 data-i18n="repo.languages">Languages</h2>
+          <h2 data-i18n="repo.languages">Мови програмування</h2>
           <div class="language-meter" data-language-meter></div>
           <div class="language-list" data-language-list></div>
         </section>

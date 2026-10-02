@@ -318,12 +318,14 @@ if ("IntersectionObserver" in window) {
   revealItems.forEach((item) => item.classList.add("visible"));
 }
 
-document.querySelectorAll('a[href^="#"]').forEach((link) => {
+document.querySelectorAll('a[href*="#"]').forEach((link) => {
   link.addEventListener("click", (event) => {
-    const selector = link.getAttribute("href");
-    if (!selector || selector === "#") return;
+    const url = new URL(link.href, document.baseURI);
+    const isPortfolioSection = link.dataset.i18nLink?.startsWith("index.html#");
+    if (url.origin !== window.location.origin || (!isPortfolioSection && url.pathname !== window.location.pathname)) return;
+    if (!url.hash || url.hash === "#") return;
 
-    const target = document.querySelector(selector);
+    const target = document.getElementById(decodeURIComponent(url.hash.slice(1)));
     if (!target) return;
 
     event.preventDefault();
@@ -388,10 +390,12 @@ topButton?.addEventListener("click", () => {
 
 const contactForm = document.querySelector(".contact-form");
 
-const setContactFormStatus = (statusElement, message, type = "") => {
+const setContactFormStatus = (statusElement, messageKey, type = "") => {
   if (!statusElement) return;
 
-  statusElement.textContent = message;
+  if (messageKey) statusElement.dataset.i18n = messageKey;
+  else delete statusElement.dataset.i18n;
+  statusElement.textContent = messageKey ? PortfolioI18n.t(messageKey) : "";
   statusElement.classList.toggle("is-success", type === "success");
   statusElement.classList.toggle("is-error", type === "error");
 };
@@ -454,16 +458,15 @@ contactForm?.addEventListener("submit", async (event) => {
 
   if (honeypot?.value) {
     form.reset();
-    setContactFormStatus(statusElement, "Thanks, your message has been sent.", "success");
+    setContactFormStatus(statusElement, "contact.success", "success");
     return;
   }
-
-  const originalButtonText = submitButton?.textContent || "";
 
   try {
     if (submitButton) {
       submitButton.disabled = true;
-      submitButton.textContent = "Sending...";
+      submitButton.dataset.i18n = "contact.sending";
+      submitButton.textContent = PortfolioI18n.t("contact.sending");
     }
 
     setContactFormStatus(statusElement, "");
@@ -473,13 +476,41 @@ contactForm?.addEventListener("submit", async (event) => {
     await submitForminitForm(form, formData);
 
     form.reset();
-    setContactFormStatus(statusElement, "Thanks, your message has been sent.", "success");
+    setContactFormStatus(statusElement, "contact.success", "success");
   } catch (error) {
-    setContactFormStatus(statusElement, "Message was not sent. Please email me directly and try again later.", "error");
+    setContactFormStatus(statusElement, "contact.error", "error");
   } finally {
     if (submitButton) {
       submitButton.disabled = false;
-      submitButton.textContent = originalButtonText;
+      submitButton.dataset.i18n = "contact.send";
+      submitButton.textContent = PortfolioI18n.t("contact.send");
     }
   }
+});
+
+const contactFields = contactForm ? Array.from(contactForm.querySelectorAll("input[required], textarea[required]")) : [];
+
+const updateFieldValidation = (field) => {
+  field.setCustomValidity("");
+  let messageKey = "";
+  if (field.validity.valueMissing) messageKey = "contact.required";
+  else if (field.validity.typeMismatch) messageKey = "contact.invalidEmail";
+  else if (field.minLength > 0 && field.value.length < field.minLength) messageKey = "contact.shortMessage";
+  field.setCustomValidity(messageKey ? PortfolioI18n.t(messageKey) : "");
+};
+
+contactFields.forEach((field) => {
+  field.addEventListener("invalid", () => updateFieldValidation(field));
+  field.addEventListener("input", () => updateFieldValidation(field));
+});
+
+contactForm?.addEventListener("reset", () => {
+  contactFields.forEach((field) => field.setCustomValidity(""));
+});
+
+document.addEventListener("localechange", () => {
+  contactFields.forEach((field) => {
+    if (field.validity.customError) updateFieldValidation(field);
+  });
+  requestTopButtonUpdate();
 });

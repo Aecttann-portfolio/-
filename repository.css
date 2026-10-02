@@ -139,6 +139,12 @@ svg {
 
 .repo-header {
   gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.repo-header .language-switch {
+  flex: 0 0 auto;
+  margin-left: auto;
 }
 
 .repo-back:hover,
@@ -451,7 +457,8 @@ svg {
 }
 
 .file-time {
-  flex: 0 0 5.8rem;
+  flex: 0 0 auto;
+  min-width: 8.5rem;
   color: var(--muted);
   font-size: 0.86rem;
   text-align: right;
@@ -686,7 +693,7 @@ svg {
   margin-bottom: 0.8rem;
 }
 
-.side-section h2 span {
+.side-section h2 span:not(.side-section-title) {
   display: inline-grid;
   place-items: center;
   min-width: 1.15rem;

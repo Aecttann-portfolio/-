@@ -1,4 +1,5 @@
 const repositoryData = window.PIZZA_REPOSITORY;
+const repositoryI18n = window.PortfolioI18n;
 
 const icons = {
   folder: '<svg class="file-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4H10l2 2h6.5A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5v-11Z"/></svg>',
@@ -92,7 +93,6 @@ function renderRepositoryMeta() {
 
   const releaseLink = document.querySelector("[data-release-tag]");
   releaseLink.textContent = repositoryData.repository.release.tag;
-  document.querySelector("[data-release-time]").textContent = repositoryData.repository.release.relativeTime;
 }
 
 function renderBreadcrumbs() {
@@ -141,8 +141,8 @@ function createFileRow(node) {
   button.innerHTML = `
     ${node.type === "directory" ? icons.folder : icons.file}
     <span class="file-name">${escapeHtml(node.name)}</span>
-    <span class="file-message">${escapeHtml(commit?.message || repositoryData.repository.latestCommit.message)}</span>
-    <span class="file-time">${escapeHtml(commit?.relativeTime || repositoryData.repository.latestCommit.relativeTime)}</span>
+    <span class="file-message" lang="${sourceLanguage(commit?.message || repositoryData.repository.latestCommit.message)}">${escapeHtml(commit?.message || repositoryData.repository.latestCommit.message)}</span>
+    <span class="file-time">${escapeHtml(repositoryI18n.formatDate(commit?.date || repositoryData.repository.latestCommit.date))}</span>
   `;
 
   button.addEventListener("click", () => {
@@ -166,17 +166,13 @@ function getCommitForNode(node) {
 function renderLatestCommit() {
   const commit = repositoryData.repository.latestCommit;
   elements.latestCommit.innerHTML = `
-    <span><strong>Latest commit</strong> ${escapeHtml(commit.message)}</span>
-    <span><code>${escapeHtml(commit.shortHash)}</code> · ${escapeHtml(commit.relativeTime)}</span>
+    <span><strong>${escapeHtml(repositoryI18n.t("repo.latestCommit"))}</strong> <span lang="${sourceLanguage(commit.message)}">${escapeHtml(commit.message)}</span></span>
+    <span><code>${escapeHtml(commit.shortHash)}</code> · ${escapeHtml(repositoryI18n.formatDate(commit.date))}</span>
   `;
 }
 
 function renderCodeViewer(file) {
-  elements.fileTitle.textContent = file.path;
-  elements.fileSubtitle.textContent = `${formatBytes(file.size)} · ${file.language || "File"} · ${file.isText ? `${lineCount(file.content)} lines` : "binary file"}`;
-  const fileGithubUrl = resolveRepositoryBlobUrl(file.path);
-  elements.fileGithub.href = fileGithubUrl || "#";
-  elements.fileGithub.hidden = !fileGithubUrl;
+  renderCodeViewerMeta(file);
   elements.codeBody.replaceChildren();
 
   if (file.isText) {
@@ -188,18 +184,31 @@ function renderCodeViewer(file) {
   preview.className = "binary-preview";
 
   if (file.asset && /\.(png|webp|jpg|jpeg|gif)$/i.test(file.asset)) {
-    preview.innerHTML = `<img src="${escapeAttribute(file.asset)}" alt="${escapeAttribute(file.name)} preview">`;
+    preview.innerHTML = `<img src="${escapeAttribute(file.asset)}" alt="${escapeAttribute(repositoryI18n.t("repo.preview", { name: file.name }))}">`;
   } else {
-    preview.textContent = "Binary file preview is not available in this browser view.";
+    preview.textContent = repositoryI18n.t("repo.previewUnavailable");
   }
 
   elements.codeBody.append(preview);
 }
 
+function renderCodeViewerMeta(file) {
+  elements.fileTitle.textContent = file.path;
+  elements.fileSubtitle.textContent = `${formatBytes(file.size)} · ${file.language || repositoryI18n.t("repo.file")} · ${file.isText ? formatLineCount(lineCount(file.content)) : repositoryI18n.t("repo.binaryFile")}`;
+  if (file.path === "README.md") {
+    elements.codeBody.lang = "en";
+  } else {
+    elements.codeBody.removeAttribute("lang");
+  }
+  const fileGithubUrl = resolveRepositoryBlobUrl(file.path);
+  elements.fileGithub.href = fileGithubUrl || "#";
+  elements.fileGithub.hidden = !fileGithubUrl;
+}
+
 function createCodeTable(content, language) {
   const table = document.createElement("table");
   table.className = "code-table";
-  table.setAttribute("aria-label", "Source code");
+  table.setAttribute("aria-label", repositoryI18n.t("repo.sourceCode"));
 
   const tbody = document.createElement("tbody");
   const lines = content.split(/\r?\n/);
@@ -480,6 +489,7 @@ function syncBrowserBackGuard(hashValue = getCurrentHashValue()) {
   const nextUrl = buildUrl(hashValue);
   history.replaceState(createHistoryState(), "", nextUrl);
   history.pushState(createHistoryState(), "", nextUrl);
+  repositoryI18n.refreshLanguageLinks();
 }
 
 function initializeBrowserBackGuard() {
@@ -530,9 +540,21 @@ function restoreFromHash() {
 }
 
 function formatBytes(bytes) {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+  const locale = repositoryI18n.language === "uk" ? "uk-UA" : "en-US";
+  if (bytes < 1024) return `${new Intl.NumberFormat(locale).format(bytes)} ${repositoryI18n.t("repo.bytes")}`;
+  const isMegabytes = bytes >= 1024 * 1024;
+  const value = bytes / (isMegabytes ? 1024 * 1024 : 1024);
+  const formatted = new Intl.NumberFormat(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(value);
+  return `${formatted} ${repositoryI18n.t(isMegabytes ? "repo.megabytes" : "repo.kilobytes")}`;
+}
+
+function formatLineCount(count) {
+  const form = new Intl.PluralRules(repositoryI18n.language).select(count);
+  return repositoryI18n.t(`repo.lines.${form}`, { count });
+}
+
+function sourceLanguage(text) {
+  return /[А-Яа-яІіЇїЄєҐґ]/u.test(text) ? "uk" : "en";
 }
 
 function lineCount(content) {
@@ -571,6 +593,28 @@ window.addEventListener("pointerup", handleInputBack, { capture: true });
 window.addEventListener("mousedown", handleInputBack, { capture: true });
 window.addEventListener("mouseup", handleInputBack, { capture: true });
 window.addEventListener("auxclick", handleInputBack, { capture: true });
+
+document.addEventListener("localechange", () => {
+  renderRepositoryMeta();
+  renderAll();
+
+  const selectedFile = fileMap.get(state.selectedFile);
+  if (!selectedFile) return;
+
+  renderCodeViewerMeta(selectedFile);
+  const codeTable = elements.codeBody.querySelector(".code-table");
+  codeTable?.setAttribute("aria-label", repositoryI18n.t("repo.sourceCode"));
+
+  const preview = elements.codeBody.querySelector(".binary-preview");
+  if (!preview) return;
+
+  const image = preview.querySelector("img");
+  if (image) {
+    image.alt = repositoryI18n.t("repo.preview", { name: selectedFile.name });
+  } else {
+    preview.textContent = repositoryI18n.t("repo.previewUnavailable");
+  }
+});
 
 renderRepositoryMeta();
 renderReadme();
