@@ -1391,6 +1391,11 @@ svg {
   transform: translateX(0) scale(1);
 }
 
+.phone-slideshow__slide--tanks {
+  object-fit: contain;
+  background: #0c0f14;
+}
+
 .phone-slideshow__arrow {
   position: absolute;
   top: 50%;

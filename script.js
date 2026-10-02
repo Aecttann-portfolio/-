@@ -283,7 +283,7 @@ const initializeSlideshows = () => {
 
     setActiveSlide(activeIndex);
 
-    if (!reducedMotionQuery.matches) {
+    if (slideshow.dataset.autoplay !== "false" && !reducedMotionQuery.matches) {
       autoplayTimer = window.setInterval(() => {
         if (!autoplayStoppedByUser) moveSlide(1);
       }, intervalMs);
