@@ -2,20 +2,11 @@
   "use strict";
 
   const supportedLanguages = ["en", "uk"];
-  const storageKey = "portfolio:language";
   const siteRoot = new URL("./", document.currentScript.src);
   const sourceLanguage = document.documentElement.lang;
   let initialized = false;
 
   const isSupported = (value) => supportedLanguages.includes(value);
-
-  const readPreference = () => {
-    try {
-      return window.localStorage.getItem(storageKey);
-    } catch {
-      return null;
-    }
-  };
 
   const resolveLanguage = () => {
     const url = new URL(window.location.href);
@@ -24,14 +15,6 @@
 
     const pathLanguage = url.pathname.slice(siteRoot.pathname.length).split("/")[0];
     if (isSupported(pathLanguage)) return pathLanguage;
-
-    const preference = readPreference();
-    if (isSupported(preference)) return preference;
-
-    for (const language of navigator.languages || [navigator.language]) {
-      const primaryLanguage = (language || "").toLowerCase().split("-")[0];
-      if (isSupported(primaryLanguage)) return primaryLanguage;
-    }
 
     return "en";
   };
@@ -58,7 +41,8 @@
   const localizedUrl = (path, locale) => {
     const url = new URL(path, siteRoot);
     const relativePath = url.pathname.slice(siteRoot.pathname.length).replace(/^(en|uk)(\/|$)/, "");
-    url.pathname = `${siteRoot.pathname}${locale}/${relativePath === "index.html" ? "" : relativePath}`;
+    const localePrefix = locale === "uk" ? "uk/" : "";
+    url.pathname = `${siteRoot.pathname}${localePrefix}${relativePath === "index.html" ? "" : relativePath}`;
     url.searchParams.delete("lang");
     return url;
   };
@@ -102,8 +86,7 @@
     });
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) {
-      const url = new URL(canonical.href);
-      url.pathname = url.pathname.replace(/\/(en|uk)(\/|$)/, `/${language}$2`);
+      const url = new URL(localizedUrl(pagePath(), language).pathname, canonical.href);
       canonical.href = url.href;
     }
     delete document.documentElement.dataset.localizing;
@@ -113,12 +96,6 @@
     if (!isSupported(nextLanguage)) return;
     const previousLanguage = language;
     language = nextLanguage;
-    try {
-      window.localStorage.setItem(storageKey, language);
-    } catch {
-      // Explicit locale URLs preserve the choice when storage is unavailable.
-    }
-
     const url = localizedUrl(pagePath(), language);
     url.search = window.location.search;
     url.searchParams.delete("lang");

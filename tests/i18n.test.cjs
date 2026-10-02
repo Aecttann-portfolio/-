@@ -182,17 +182,21 @@ function createEnvironment(options = {}) {
   return { api, document, elements, events, history, historyState, location, values, writes, FakeEvent };
 }
 
-test('locale resolution respects query, path, saved preference, browser preference, and fallback', () => {
+test('explicit URLs select the locale and the root defaults to English', () => {
   const cases = [
     { name: 'query beats path and saved preference', url: 'https://example.test/-/uk/?lang=en', storage: { [storageKey]: 'uk' }, expected: 'en' },
     { name: 'path beats saved preference', url: 'https://example.test/-/en/', storage: { [storageKey]: 'uk' }, expected: 'en' },
-    { name: 'saved preference beats browser preference', storage: { [storageKey]: 'uk' }, languages: ['en-US'], expected: 'uk' },
-    { name: 'first supported browser locale is selected', languages: ['de-DE', 'uk-UA', 'en-US'], expected: 'uk' },
+    { name: 'saved preference does not override the English root', storage: { [storageKey]: 'uk' }, languages: ['en-US'], expected: 'en' },
+    { name: 'Ukrainian browser locale does not override the English root', languages: ['de-DE', 'uk-UA', 'en-US'], expected: 'en' },
     { name: 'English browser regional locale is supported', languages: ['fr-FR', 'en-GB', 'uk-UA'], expected: 'en' },
     { name: 'English is the fallback', languages: ['de-DE', 'fr-FR'], expected: 'en' },
     { name: 'invalid query falls through to explicit path', url: 'https://example.test/-/uk/?lang=fr', expected: 'uk' },
     { name: 'locale-like path segments do not select a language', url: 'https://example.test/-/ukulele/', languages: ['en-US'], expected: 'en' },
-    { name: 'unsupported saved preference falls through', storage: { [storageKey]: 'fr' }, languages: ['uk-UA'], expected: 'uk' },
+    { name: 'unsupported saved preference does not affect the default', storage: { [storageKey]: 'fr' }, languages: ['uk-UA'], expected: 'en' },
+    { name: 'root index defaults to English', url: 'https://example.test/-/index.html', storage: { [storageKey]: 'uk' }, languages: ['uk-UA'], expected: 'en' },
+    { name: 'root without trailing slash defaults to English', url: 'https://example.test/-', storage: { [storageKey]: 'uk' }, languages: ['uk-UA'], expected: 'en' },
+    { name: 'Ukrainian URL selects Ukrainian', url: 'https://example.test/-/uk/', expected: 'uk' },
+    { name: 'explicit query selects Ukrainian at root', url: 'https://example.test/-/?lang=uk', expected: 'uk' },
   ];
   for (const entry of cases) {
     const { expected, name, ...options } = entry;
@@ -203,14 +207,14 @@ test('locale resolution respects query, path, saved preference, browser preferen
 });
 
 test('unavailable local storage does not stop initialization or switching', () => {
-  const environment = createEnvironment({ blockStorage: true, languages: ['uk-UA'] });
+  const environment = createEnvironment({ url: 'https://example.test/-/uk/', blockStorage: true, languages: ['uk-UA'] });
   assert.equal(environment.api.language, 'uk');
   assert.doesNotThrow(() => environment.api.setLanguage('en'));
   assert.equal(environment.api.language, 'en');
 });
 
 test('dictionary lookup interpolates parameters and falls back for unavailable keys', () => {
-  const { api } = createEnvironment({ languages: ['uk-UA'] });
+  const { api } = createEnvironment({ url: 'https://example.test/-/uk/', languages: ['uk-UA'] });
   assert.equal(api.t('test.greeting', { name: 'Тарас' }), 'Привіт, Тарас!');
   assert.equal(api.t('test.englishOnly'), 'English fallback');
   assert.equal(api.t('test.missing'), 'test.missing');
@@ -251,7 +255,7 @@ test('only the selected language link is marked current and a click switches the
   assert.equal(ukrainian.getAttribute('aria-current'), 'true');
   assert.notEqual(english.getAttribute('aria-current'), 'true');
   assert.equal(click.defaultPrevented, true);
-  assert.equal(environment.values.get(storageKey), 'uk');
+  assert.equal(environment.values.has(storageKey), false);
 });
 
 test('switching preserves existing query parameters, hash, and history state', () => {
@@ -264,7 +268,7 @@ test('switching preserves existing query parameters, hash, and history state', (
   assert.equal(result.searchParams.get('campaign'), 'a b');
   assert.equal(result.hash, '#projects');
   assert.strictEqual(environment.history.state, environment.historyState);
-  assert.equal(environment.values.get(storageKey), 'uk');
+  assert.equal(environment.values.has(storageKey), false);
   const changeEvent = environment.events.find((event) => event.type === 'localechange');
   assert.equal(changeEvent?.detail?.language, 'uk');
 });
@@ -350,9 +354,33 @@ test('the page base resolves shared assets from the deployment root', () => {
   assert.equal(base.href, 'https://example.test/-/');
 });
 
-test('resolving an implicit language does not save a preference', () => {
+test('initialization keeps the English root address with Ukrainian preferences', () => {
+  const originalUrl = 'https://example.test/-/?campaign=portfolio#projects';
+  const environment = createEnvironment({ url: originalUrl, languages: ['uk-UA'], storage: { [storageKey]: 'uk' } });
+  assert.equal(environment.api.language, 'en');
+  assert.equal(environment.location.href, originalUrl);
+  assert.equal(environment.writes.length, 0);
+  assert.equal(environment.values.get(storageKey), 'uk');
+});
+
+test('selecting English returns to the root and preserves query and hash', () => {
+  const environment = createEnvironment({ url: 'https://example.test/-/uk/?campaign=portfolio#projects', languages: ['uk-UA'] });
+  environment.api.setLanguage('en');
+  assert.equal(environment.api.language, 'en');
+  assert.equal(environment.location.href, 'https://example.test/-/?campaign=portfolio#projects');
+  const reload = createEnvironment({ url: environment.location.href, languages: ['uk-UA'], storage: { [storageKey]: 'uk' } });
+  assert.equal(reload.api.language, 'en');
+});
+
+test('selecting the active English language keeps the root address', () => {
+  const environment = createEnvironment({ url: 'https://example.test/-/#projects', languages: ['uk-UA'] });
+  environment.api.setLanguage('en');
+  assert.equal(environment.location.href, 'https://example.test/-/#projects');
+});
+
+test('default language resolution does not save a preference', () => {
   const environment = createEnvironment({ languages: ['uk-UA'] });
-  assert.equal(environment.api.language, 'uk');
+  assert.equal(environment.api.language, 'en');
   assert.equal(environment.values.has(storageKey), false);
 });
 

@@ -49,7 +49,8 @@ function translate(source, language) {
     const localizedLink = tag.match(/\bdata-i18n-link="([^"]+)"/)?.[1];
     if (localizedLink) {
       const target = localizedLink.replace(/^index\.html(?=[?#]|$)/, "");
-      tag = tag.replace(/\bhref="[^"]*"/, `href="${language}/${target}"`);
+      const localePrefix = language === "uk" ? "uk/" : "";
+      tag = tag.replace(/\bhref="[^"]*"/, () => `href="${localePrefix}${target}"`);
     }
 
     const selectedLanguage = tag.match(/\bdata-language="(en|uk)"/)?.[1];
@@ -59,7 +60,14 @@ function translate(source, language) {
     }
 
     if (tag.includes("data-i18n-store-link")) tag = tag.replace(/hl=(en|uk)/, `hl=${language}`);
-    if (tag.includes('rel="canonical"')) tag = tag.replace(/\/(en|uk)\//, `/${language}/`);
+    if (tag.includes('rel="canonical"') && language === "uk") {
+      tag = tag.replace(/\bhref="([^"]*)"/, (_match, href) => {
+        const url = new URL(href);
+        const lastSlash = url.pathname.lastIndexOf("/") + 1;
+        url.pathname = `${url.pathname.slice(0, lastSlash)}uk/${url.pathname.slice(lastSlash)}`;
+        return `href="${url.href}"`;
+      });
+    }
     return tag;
   });
 

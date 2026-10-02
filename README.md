@@ -1,6 +1,6 @@
 # Portfolio
 
-Static portfolio published with GitHub Pages. The English and Ukrainian versions live at `/en/` and `/uk/`.
+Static portfolio published with GitHub Pages. The default English version lives at the site root and the Ukrainian version at `/uk/`. Existing `/en/` links remain supported.
 
 ## Localization
 
@@ -14,7 +14,7 @@ node tools/build-locales.cjs
 
 Commit the generated `en/` and `uk/` pages with their source changes. They provide translated text and metadata even without JavaScript. The shared runtime switches language in place and preserves form values, slideshow state, and repository navigation.
 
-At the root URL, language priority is the `lang` query parameter, saved preference, browser language, then English. A language-specific URL takes priority over saved and browser preferences. The Pizza PWA demo, source code, README excerpts, commit messages, and text inside screenshots or videos retain their original language.
+The root URL always defaults to English without changing the address, regardless of browser language or previous language choices. An explicit `lang` query parameter or `/uk/` path selects Ukrainian. Language links preserve the choice in the URL; selecting English returns to the site root. The Pizza PWA demo, source code, README excerpts, commit messages, and text inside screenshots or videos retain their original language.
 
 ## Checks
 
